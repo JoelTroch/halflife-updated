@@ -26,6 +26,8 @@ struct skilldata_t
 	float agruntDmgPunch;
 
 	float apacheHealth;
+
+	float armormanHealth;
 	
 	float barneyHealth;
 
