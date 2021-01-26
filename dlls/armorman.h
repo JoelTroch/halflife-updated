@@ -35,7 +35,8 @@
 
 #pragma once
 
-constexpr int ARMORMAN_AE_SHOOT = 3;
+constexpr int ARMORMAN_AE_SHOOT  = 3;
+constexpr int ARMORMAN_AE_RELOAD = 5;
 
 #define ARMORMAN_SHOTGUN_OFFSET Vector( 0.0f, 0.0f, 55.0f )
 
@@ -51,12 +52,18 @@ public:
 
 	BOOL CheckRangeAttack1( float flDot, float flDist ) override;
 
+	void CheckAmmo() override;
 	void HandleAnimEvent( MonsterEvent_t *pEvent ) override;
+
+	Schedule_t *GetSchedule() override;
+	Schedule_t *GetScheduleOfType( int Type ) override;
+	void RunTask( Task_t *pTask ) override;
 
 	int Save( CSave &save ) override;
 	int Restore( CRestore &restore ) override;
 	static TYPEDESCRIPTION m_SaveData[];
 
+	CUSTOM_SCHEDULES;
 private:
 	BOOL m_bLastCheckAttackResult;
 	float m_flNextCheckAttackTime;
