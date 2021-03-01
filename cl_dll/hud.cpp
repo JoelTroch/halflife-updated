@@ -364,7 +364,7 @@ void CHud :: Init()
 	GetClientVoiceMgr()->Init(&g_VoiceStatusHelper, (vgui::Panel**)&gViewPort);
 
 	m_Menu.Init();
-	
+
 	MsgFunc_ResetHUD(0, 0, NULL );
 }
 

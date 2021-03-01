@@ -21,9 +21,6 @@
 #include "parsemsg.h"
 #include "r_efx.h"
 
-#include "particleman.h"
-extern IParticleMan *g_pParticleMan;
-
 #define MAX_CLIENTS 32
 
 #if !defined( _TFC )
@@ -85,12 +82,7 @@ void CHud :: MsgFunc_InitHUD( const char *pszName, int iSize, void *pbuf )
 
 	// catch up on any building events that are going on
 	gEngfuncs.pfnServerCmd("sendevents");
-#endif
-
-	if ( g_pParticleMan )
-		 g_pParticleMan->ResetParticles();
-
-#if !defined( _TFC )
+#else
 	//Probably not a good place to put this.
 	pBeam = pBeam2 = NULL;
 	pFlare = NULL;	// Vit_amiN: clear egon's beam flare

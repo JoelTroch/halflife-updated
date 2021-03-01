@@ -34,7 +34,6 @@
 #include "Platform.h"
 #include "Exports.h"
 
-#include "tri.h"
 #include "vgui_TeamFortressViewport.h"
 #include "../public/interface.h"
 
@@ -42,13 +41,6 @@ cl_enginefunc_t gEngfuncs;
 CHud gHUD;
 TeamFortressViewport *gViewPort = NULL;
 
-
-#include "particleman.h"
-CSysModule *g_hParticleManModule = NULL;
-IParticleMan *g_pParticleMan = NULL;
-
-void CL_LoadParticleMan();
-void CL_UnloadParticleMan();
 
 void InitInput ();
 void EV_HookEvents();
@@ -146,7 +138,6 @@ int DLLEXPORT Initialize( cl_enginefunc_t *pEnginefuncs, int iVersion )
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(cl_enginefunc_t));
 
 	EV_HookEvents();
-	CL_LoadParticleMan();
 
 	// get tracker interface, if any
 	return 1;
@@ -292,46 +283,6 @@ void DLLEXPORT HUD_DirectorMessage( int iSize, void *pbuf )
 //	RecClDirectorMessage(iSize, pbuf);
 
 	gHUD.m_Spectator.DirectorMessage( iSize, pbuf );
-}
-
-void CL_UnloadParticleMan()
-{
-	Sys_UnloadModule( g_hParticleManModule );
-
-	g_pParticleMan = NULL;
-	g_hParticleManModule = NULL;
-}
-
-void CL_LoadParticleMan()
-{
-	char szPDir[512];
-
-	if ( gEngfuncs.COM_ExpandFilename( PARTICLEMAN_DLLNAME, szPDir, sizeof( szPDir ) ) == FALSE )
-	{
-		g_pParticleMan = NULL;
-		g_hParticleManModule = NULL;
-		return;
-	}
-
-	g_hParticleManModule = Sys_LoadModule( szPDir );
-	CreateInterfaceFn particleManFactory = Sys_GetFactory( g_hParticleManModule );
-
-	if ( particleManFactory == NULL )
-	{
-		g_pParticleMan = NULL;
-		g_hParticleManModule = NULL;
-		return;
-	}
-
-	g_pParticleMan = (IParticleMan *)particleManFactory( PARTICLEMAN_INTERFACE, NULL);
-
-	if ( g_pParticleMan )
-	{
-		 g_pParticleMan->SetUp( &gEngfuncs );
-
-		 // Add custom particle classes here BEFORE calling anything else or you will die.
-		 g_pParticleMan->AddCustomParticleClassSize ( sizeof ( CBaseParticle ) );
-	}
 }
 
 cldll_func_dst_t *g_pcldstAddrs;
