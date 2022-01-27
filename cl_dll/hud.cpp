@@ -336,10 +336,10 @@ void CHud::Init()
 	cl_bobtilt = CVAR_CREATE("cl_bobtilt", "0", FCVAR_ARCHIVE);
 
 	m_pFlashlightCvarRange = CVAR_CREATE( "cl_flashlight_range", "2048", FCVAR_ARCHIVE );
-	m_pFlashlightCvarRadius = CVAR_CREATE( "cl_flashlight_radius", "60", FCVAR_ARCHIVE );
-	m_pFlashlightCvarRed = CVAR_CREATE( "cl_flashlight_red", "0", FCVAR_ARCHIVE );
+	m_pFlashlightCvarRadius = CVAR_CREATE( "cl_flashlight_radius", "180", FCVAR_ARCHIVE );
+	m_pFlashlightCvarRed = CVAR_CREATE( "cl_flashlight_red", "255", FCVAR_ARCHIVE );
 	m_pFlashlightCvarGreen = CVAR_CREATE( "cl_flashlight_green", "255", FCVAR_ARCHIVE );
-	m_pFlashlightCvarBlue = CVAR_CREATE( "cl_flashlight_blue", "0", FCVAR_ARCHIVE );
+	m_pFlashlightCvarBlue = CVAR_CREATE( "cl_flashlight_blue", "255", FCVAR_ARCHIVE );
 
 	m_pSpriteList = NULL;
 

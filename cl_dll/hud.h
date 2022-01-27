@@ -362,13 +362,17 @@ private:
 	Rect* m_prcBeam;
 	float m_flBat;
 	int m_iBat;
-	bool m_fOn;
 	float m_fFade;
 	int m_iWidth; // width of the battery innards
 
 	void UpdateFlashlight();
 
 	dlight_t *m_pLight;
+
+public:
+	bool m_fOn;
+	HSPRITE m_hOverlay;
+	Vector m_vecSpotOrigin;
 };
 
 //

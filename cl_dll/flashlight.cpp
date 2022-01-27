@@ -73,6 +73,8 @@ bool CHudFlashlight::VidInit()
 	m_prcBeam = &gHUD.GetSpriteRect(HUD_flash_beam);
 	m_iWidth = m_prc2->right - m_prc2->left;
 
+	m_hOverlay = gHUD.GetSprite( gHUD.GetSpriteIndex( "flash_overlay" ) );
+
 	return true;
 }
 
@@ -155,6 +157,7 @@ bool CHudFlashlight::Draw(float flTime)
 	return true;
 }
 
+
 void CHudFlashlight::UpdateFlashlight()
 {
 	if ( !m_fOn )
@@ -189,6 +192,7 @@ void CHudFlashlight::UpdateFlashlight()
 		m_pLight->die = FLT_MAX;
 	}
 
+	m_vecSpotOrigin = tr.endpos;
 	m_pLight->origin = tr.endpos;
 	m_pLight->radius = gHUD.m_pFlashlightCvarRadius->value;
 	m_pLight->color.r = gHUD.m_pFlashlightCvarRed->value;
