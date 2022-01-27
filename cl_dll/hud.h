@@ -339,6 +339,7 @@ private:
 	int m_iHeight; // width of the battery innards
 };
 
+#include "pm_defs.h"
 
 //
 //-----------------------------------------------------
@@ -365,12 +366,16 @@ private:
 	float m_fFade;
 	int m_iWidth; // width of the battery innards
 
+	float GetFlashlightRadius( const Vector vecSrc, const pmtrace_t tr );
 	void UpdateFlashlight();
 
 	dlight_t *m_pLight;
 
 public:
+	/** Is the flashlight on? - Existing Half-Life code, made "public" for easier access outside of the class. */
 	bool m_fOn;
+
+	float m_flSpotScale;
 	HSPRITE m_hOverlay;
 	Vector m_vecSpotOrigin;
 };
@@ -615,6 +620,7 @@ public:
 
 	float GetSensitivity();
 
+	cvar_t *m_pFlashlightCvarDecayRange;
 	cvar_t *m_pFlashlightCvarRange;
 	cvar_t *m_pFlashlightCvarRadius;
 	cvar_t *m_pFlashlightCvarRed;

@@ -68,7 +68,7 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	AngleVectors( vecAngles, vecForward, vecRight, vecUp );
 
 	// TODO - Query the sprite size at runtime?
-	const float flSpriteSize = 256.0f;
+	const float flSpriteSize = 256.0f * gHUD.m_Flash.m_flSpotScale;
 	// TODO - Find a better way the position of the sprite
 	// On flat walls, it's fine enough, but on pillars or corners, this is going to look ugly
 	Vector vecOrigin = gHUD.m_Flash.m_vecSpotOrigin;
@@ -80,8 +80,9 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	gEngfuncs.pTriAPI->CullFace( TRI_NONE );
 	gEngfuncs.pTriAPI->Begin( TRI_QUADS );
 
-	gEngfuncs.pTriAPI->Color4f( gHUD.m_pFlashlightCvarRed->value / 255.0f, gHUD.m_pFlashlightCvarGreen->value / 255.0f, gHUD.m_pFlashlightCvarBlue->value / 255.0f, 0.5f );
-	gEngfuncs.pTriAPI->Brightness( 0.5f );
+	const float flOpacity = 0.5f * gHUD.m_Flash.m_flSpotScale;
+	gEngfuncs.pTriAPI->Color4f( gHUD.m_pFlashlightCvarRed->value / 255.0f, gHUD.m_pFlashlightCvarGreen->value / 255.0f, gHUD.m_pFlashlightCvarBlue->value / 255.0f, flOpacity );
+	gEngfuncs.pTriAPI->Brightness( flOpacity );
 
 	gEngfuncs.pTriAPI->TexCoord2f( 1.0f, 1.0f );
 	Vector vecPoint = vecOrigin;

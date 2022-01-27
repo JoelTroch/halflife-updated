@@ -23,7 +23,6 @@
 #include "parsemsg.h"
 
 #include "event_api.h"
-#include "pm_defs.h"
 
 #include <float.h>
 #include <string.h>
@@ -157,6 +156,18 @@ bool CHudFlashlight::Draw(float flTime)
 	return true;
 }
 
+float CHudFlashlight::GetFlashlightRadius( const Vector vecSrc, const pmtrace_t tr )
+{
+	const float flDist = fabs( (tr.endpos - vecSrc).Length() );
+	if ( flDist > gHUD.m_pFlashlightCvarDecayRange->value )
+	{
+		m_flSpotScale = 1.0f;
+		return gHUD.m_pFlashlightCvarRadius->value;
+	}
+
+	m_flSpotScale = flDist / gHUD.m_pFlashlightCvarDecayRange->value;
+	return fmax( 0.01f, gHUD.m_pFlashlightCvarRadius->value * m_flSpotScale ); // Don't use 0, otherwise the light is killed!
+}
 
 void CHudFlashlight::UpdateFlashlight()
 {
@@ -172,6 +183,9 @@ void CHudFlashlight::UpdateFlashlight()
 	}
 
 	cl_entity_t *pPlayer = gEngfuncs.GetLocalPlayer();
+	if ( !pPlayer )
+		return;
+
 	Vector vecAngles;
 	gEngfuncs.GetViewAngles( vecAngles );
 
@@ -194,7 +208,7 @@ void CHudFlashlight::UpdateFlashlight()
 
 	m_vecSpotOrigin = tr.endpos;
 	m_pLight->origin = tr.endpos;
-	m_pLight->radius = gHUD.m_pFlashlightCvarRadius->value;
+	m_pLight->radius = GetFlashlightRadius( pPlayer->origin, tr );
 	m_pLight->color.r = gHUD.m_pFlashlightCvarRed->value;
 	m_pLight->color.g = gHUD.m_pFlashlightCvarGreen->value;
 	m_pLight->color.b = gHUD.m_pFlashlightCvarBlue->value;
