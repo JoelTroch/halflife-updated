@@ -621,8 +621,10 @@ public:
 	float GetSensitivity();
 
 	cvar_t *m_pFlashlightCvarDecayRange;
-	cvar_t *m_pFlashlightCvarRange;
 	cvar_t *m_pFlashlightCvarRadius;
+	cvar_t *m_pFlashlightCvarRange;
+	cvar_t *m_pFlashlightCvarTargetDistance;
+
 	cvar_t *m_pFlashlightCvarRed;
 	cvar_t *m_pFlashlightCvarGreen;
 	cvar_t *m_pFlashlightCvarBlue;

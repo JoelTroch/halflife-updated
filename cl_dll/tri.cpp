@@ -74,7 +74,7 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	Vector vecOrigin = gHUD.m_Flash.m_vecSpotOrigin;
 	vecOrigin = vecOrigin + vecRight * -flSpriteSize / 2.0f;
 	vecOrigin = vecOrigin + vecUp * -flSpriteSize / 2.0f;
-	vecOrigin = vecOrigin + vecForward * -16.0f;
+	vecOrigin = vecOrigin + vecForward * -gHUD.m_pFlashlightCvarTargetDistance->value;
 
 	gEngfuncs.pTriAPI->RenderMode( kRenderTransAdd );
 	gEngfuncs.pTriAPI->CullFace( TRI_NONE );
