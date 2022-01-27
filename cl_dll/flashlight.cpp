@@ -22,6 +22,10 @@
 #include "cl_util.h"
 #include "parsemsg.h"
 
+#include "event_api.h"
+#include "pm_defs.h"
+
+#include <float.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -36,6 +40,7 @@ bool CHudFlashlight::Init()
 {
 	m_fFade = 0;
 	m_fOn = false;
+	m_pLight = nullptr;
 
 	HOOK_MESSAGE(Flashlight);
 	HOOK_MESSAGE(FlashBat);
@@ -51,6 +56,7 @@ void CHudFlashlight::Reset()
 {
 	m_fFade = 0;
 	m_fOn = false;
+	m_pLight = nullptr;
 }
 
 bool CHudFlashlight::VidInit()
@@ -144,6 +150,48 @@ bool CHudFlashlight::Draw(float flTime)
 		SPR_DrawAdditive(0, x + iOffset, y, &rc);
 	}
 
+	UpdateFlashlight();
 
 	return true;
+}
+
+void CHudFlashlight::UpdateFlashlight()
+{
+	if ( !m_fOn )
+	{
+		if ( m_pLight )
+		{
+			memset( m_pLight, 0, sizeof( *m_pLight ) );
+			m_pLight = nullptr;
+		}
+
+		return;
+	}
+
+	cl_entity_t *pPlayer = gEngfuncs.GetLocalPlayer();
+	Vector vecAngles;
+	gEngfuncs.GetViewAngles( vecAngles );
+
+	Vector vecForward;
+	AngleVectors( vecAngles, vecForward, nullptr, nullptr );
+
+	Vector vecEnd;
+	VectorMA( pPlayer->origin, gHUD.m_pFlashlightCvarRange->value, vecForward, vecEnd );
+
+	pmtrace_t tr;
+	gEngfuncs.pEventAPI->EV_SetSolidPlayers( pPlayer->index - 1 );
+	gEngfuncs.pEventAPI->EV_SetTraceHull( 2 );
+	gEngfuncs.pEventAPI->EV_PlayerTrace( pPlayer->origin, vecEnd, PM_STUDIO_BOX, -1, &tr );
+
+	if ( !m_pLight )
+	{
+		m_pLight = gEngfuncs.pEfxAPI->CL_AllocDlight( 1 );
+		m_pLight->die = FLT_MAX;
+	}
+
+	m_pLight->origin = tr.endpos;
+	m_pLight->radius = gHUD.m_pFlashlightCvarRadius->value;
+	m_pLight->color.r = gHUD.m_pFlashlightCvarRed->value;
+	m_pLight->color.g = gHUD.m_pFlashlightCvarGreen->value;
+	m_pLight->color.b = gHUD.m_pFlashlightCvarBlue->value;
 }

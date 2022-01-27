@@ -142,6 +142,7 @@ TYPEDESCRIPTION CBasePlayer::m_playerSaveData[] =
 		//DEFINE_FIELD( CBasePlayer, m_fOnTarget, FIELD_BOOLEAN ), // Don't need to restore
 		//DEFINE_FIELD( CBasePlayer, m_nCustomSprayFrames, FIELD_INTEGER ), // Don't need to restore
 
+		DEFINE_FIELD( CBasePlayer, m_bIsFlashlightOn, FIELD_BOOLEAN )
 };
 
 LINK_ENTITY_TO_CLASS(player, CBasePlayer);
@@ -2869,6 +2870,7 @@ void CBasePlayer::Spawn()
 	m_fWeapon = false;
 	m_pClientActiveItem = NULL;
 	m_iClientBattery = -1;
+	m_eClientIsFlashlightOn = FlashlightUpdate::ForceUpdate;
 
 	// reset all ammo values to 0
 	for (int i = 0; i < MAX_AMMO_SLOTS; i++)
@@ -2900,6 +2902,7 @@ void CBasePlayer::Precache()
 	m_bitsHUDDamage = -1;
 
 	m_iClientBattery = -1;
+	m_eClientIsFlashlightOn = FlashlightUpdate::ForceUpdate;
 
 	m_iTrain |= TRAIN_NEW;
 
@@ -3291,7 +3294,7 @@ void CBasePlayer::GiveNamedItem(const char* szName, int defaultAmmo)
 
 bool CBasePlayer::FlashlightIsOn()
 {
-	return FBitSet(pev->effects, EF_DIMLIGHT);
+	return m_bIsFlashlightOn;
 }
 
 
@@ -3305,12 +3308,7 @@ void CBasePlayer::FlashlightTurnOn()
 	if (HasSuit())
 	{
 		EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, SOUND_FLASHLIGHT_ON, 1.0, ATTN_NORM, 0, PITCH_NORM);
-		SetBits(pev->effects, EF_DIMLIGHT);
-		MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, NULL, pev);
-		WRITE_BYTE(1);
-		WRITE_BYTE(m_iFlashBattery);
-		MESSAGE_END();
-
+		m_bIsFlashlightOn = true;
 		m_flFlashLightTime = FLASH_DRAIN_TIME + gpGlobals->time;
 	}
 }
@@ -3319,12 +3317,7 @@ void CBasePlayer::FlashlightTurnOn()
 void CBasePlayer::FlashlightTurnOff()
 {
 	EMIT_SOUND_DYN(ENT(pev), CHAN_WEAPON, SOUND_FLASHLIGHT_OFF, 1.0, ATTN_NORM, 0, PITCH_NORM);
-	ClearBits(pev->effects, EF_DIMLIGHT);
-	MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, NULL, pev);
-	WRITE_BYTE(0);
-	WRITE_BYTE(m_iFlashBattery);
-	MESSAGE_END();
-
+	m_bIsFlashlightOn = false;
 	m_flFlashLightTime = FLASH_CHARGE_TIME + gpGlobals->time;
 }
 
@@ -3351,6 +3344,7 @@ void CBasePlayer::ForceClientDllUpdate()
 		m_rgAmmoLast[i] = 0;
 	}
 
+	m_eClientIsFlashlightOn = FlashlightUpdate::ForceUpdate;
 	m_iTrain |= TRAIN_NEW; // Force new train message.
 	m_fWeapon = false;	   // Force weapon send
 	m_fKnownItem = false;  // Force weaponinit messages.
@@ -4077,15 +4071,6 @@ void CBasePlayer::UpdateClientData()
 		MESSAGE_BEGIN(MSG_ONE, gmsgFlashBattery, NULL, pev);
 		WRITE_BYTE(m_iFlashBattery);
 		MESSAGE_END();
-
-		//Tell client the flashlight is on
-		if (FlashlightIsOn())
-		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, NULL, pev);
-			WRITE_BYTE(1);
-			WRITE_BYTE(m_iFlashBattery);
-			MESSAGE_END();
-		}
 	}
 
 	// Update Flashlight
@@ -4118,6 +4103,17 @@ void CBasePlayer::UpdateClientData()
 		MESSAGE_END();
 	}
 
+	if ( m_eClientIsFlashlightOn == FlashlightUpdate::ForceUpdate ||
+		(m_bIsFlashlightOn && m_eClientIsFlashlightOn == FlashlightUpdate::Disabled) ||
+		(!m_bIsFlashlightOn && m_eClientIsFlashlightOn == FlashlightUpdate::Enabled) )
+	{
+		MESSAGE_BEGIN( MSG_ONE, gmsgFlashlight, NULL, pev );
+			WRITE_BYTE( m_bIsFlashlightOn ? 1 : 0 );
+			WRITE_BYTE( m_iFlashBattery );
+		MESSAGE_END();
+
+		m_eClientIsFlashlightOn = m_bIsFlashlightOn ? FlashlightUpdate::Enabled : FlashlightUpdate::Disabled;
+	}
 
 	if ((m_iTrain & TRAIN_NEW) != 0)
 	{

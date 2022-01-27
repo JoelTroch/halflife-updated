@@ -84,6 +84,13 @@ enum sbar_data
 
 #define CHAT_INTERVAL 1.0f
 
+enum class FlashlightUpdate
+{
+	Disabled,
+	Enabled,
+	ForceUpdate
+};
+
 class CBasePlayer : public CBaseMonster
 {
 public:
@@ -355,6 +362,9 @@ public:
 
 	//True if the player is currently spawning.
 	bool m_bIsSpawning = false;
+
+	bool m_bIsFlashlightOn;
+	FlashlightUpdate m_eClientIsFlashlightOn;
 };
 
 inline void CBasePlayer::SetWeaponBit(int id)

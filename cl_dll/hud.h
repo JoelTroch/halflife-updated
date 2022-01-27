@@ -365,6 +365,10 @@ private:
 	bool m_fOn;
 	float m_fFade;
 	int m_iWidth; // width of the battery innards
+
+	void UpdateFlashlight();
+
+	dlight_t *m_pLight;
 };
 
 //
@@ -606,6 +610,12 @@ public:
 	void AddHudElem(CHudBase* p);
 
 	float GetSensitivity();
+
+	cvar_t *m_pFlashlightCvarRange;
+	cvar_t *m_pFlashlightCvarRadius;
+	cvar_t *m_pFlashlightCvarRed;
+	cvar_t *m_pFlashlightCvarGreen;
+	cvar_t *m_pFlashlightCvarBlue;
 };
 
 extern CHud gHUD;
