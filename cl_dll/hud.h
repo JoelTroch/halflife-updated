@@ -376,6 +376,7 @@ public:
 	bool m_fOn;
 
 	float m_flSpotScale;
+	int m_iOverlaySize;
 	HSPRITE m_hOverlay;
 	Vector m_vecSpotOrigin;
 };

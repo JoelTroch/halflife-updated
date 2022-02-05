@@ -72,7 +72,10 @@ bool CHudFlashlight::VidInit()
 	m_prcBeam = &gHUD.GetSpriteRect(HUD_flash_beam);
 	m_iWidth = m_prc2->right - m_prc2->left;
 
-	m_hOverlay = gHUD.GetSprite( gHUD.GetSpriteIndex( "flash_overlay" ) );
+	const int iFlashOverlaySpriteIndex = gHUD.GetSpriteIndex( "flash_overlay" );
+	m_hOverlay = gHUD.GetSprite( iFlashOverlaySpriteIndex );
+	const Rect *hOverlayRect = &gHUD.GetSpriteRect( iFlashOverlaySpriteIndex );
+	m_iOverlaySize = hOverlayRect->right - hOverlayRect->left;
 
 	return true;
 }

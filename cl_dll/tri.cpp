@@ -67,9 +67,8 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	Vector vecUp;
 	AngleVectors( vecAngles, vecForward, vecRight, vecUp );
 
-	// TODO - Query the sprite size at runtime?
-	const float flSpriteSize = 256.0f * gHUD.m_Flash.m_flSpotScale;
-	// TODO - Find a better way the position of the sprite
+	const float flSpriteSize = gHUD.m_Flash.m_iOverlaySize * gHUD.m_Flash.m_flSpotScale;
+	// TODO - Find a better way to draw the sprite
 	// On flat walls, it's fine enough, but on pillars or corners, this is going to look ugly
 	Vector vecOrigin = gHUD.m_Flash.m_vecSpotOrigin;
 	vecOrigin = vecOrigin + vecRight * -flSpriteSize / 2.0f;
