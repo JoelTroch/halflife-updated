@@ -161,15 +161,23 @@ bool CHudFlashlight::Draw(float flTime)
 
 float CHudFlashlight::GetFlashlightRadius( const Vector vecSrc, const pmtrace_t tr )
 {
+#ifdef DEBUG
+	const float flDecayRange = gHUD.m_pFlashlightCvarDecayRange->value;
+	const float flRadius = gHUD.m_pFlashlightCvarRadius->value;
+#else
+	const float flDecayRange = 512.0f;
+	const float flRadius = 180.0f;
+#endif
+
 	const float flDist = fabs( (tr.endpos - vecSrc).Length() );
-	if ( flDist > gHUD.m_pFlashlightCvarDecayRange->value )
+	if ( flDist > flDecayRange )
 	{
 		m_flSpotScale = 0.0f;
-		return gHUD.m_pFlashlightCvarRadius->value;
+		return flRadius;
 	}
 
-	m_flSpotScale = flDist / gHUD.m_pFlashlightCvarDecayRange->value;
-	return fmax( 0.01f, gHUD.m_pFlashlightCvarRadius->value * m_flSpotScale ); // Don't use 0, otherwise the light is killed!
+	m_flSpotScale = flDist / flDecayRange;
+	return fmax( 0.01f, flRadius * m_flSpotScale ); // Don't use 0, otherwise the light is killed!
 }
 
 void CHudFlashlight::UpdateFlashlight()
@@ -196,7 +204,11 @@ void CHudFlashlight::UpdateFlashlight()
 	AngleVectors( vecAngles, vecForward, nullptr, nullptr );
 
 	Vector vecEnd;
+#ifdef DEBUG
 	VectorMA( pPlayer->origin, gHUD.m_pFlashlightCvarRange->value, vecForward, vecEnd );
+#else
+	VectorMA( pPlayer->origin, 2048.0f, vecForward, vecEnd );
+#endif
 
 	pmtrace_t tr;
 	gEngfuncs.pEventAPI->EV_SetSolidPlayers( pPlayer->index - 1 );
@@ -212,7 +224,13 @@ void CHudFlashlight::UpdateFlashlight()
 	m_vecSpotOrigin = tr.endpos;
 	m_pLight->origin = tr.endpos;
 	m_pLight->radius = GetFlashlightRadius( pPlayer->origin, tr );
+#ifdef DEBUG
 	m_pLight->color.r = gHUD.m_pFlashlightCvarRed->value;
 	m_pLight->color.g = gHUD.m_pFlashlightCvarGreen->value;
 	m_pLight->color.b = gHUD.m_pFlashlightCvarBlue->value;
+#else
+	m_pLight->color.r = 255.0f;
+	m_pLight->color.g = 255.0f;
+	m_pLight->color.b = 255.0f;
+#endif
 }

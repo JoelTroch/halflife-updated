@@ -73,16 +73,27 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	Vector vecOrigin = gHUD.m_Flash.m_vecSpotOrigin;
 	vecOrigin = vecOrigin + vecRight * -flSpriteSize / 2.0f;
 	vecOrigin = vecOrigin + vecUp * -flSpriteSize / 2.0f;
+#ifdef DEBUG
 	vecOrigin = vecOrigin + vecForward * -gHUD.m_pFlashlightCvarTargetDistance->value;
+#else
+	vecOrigin = vecOrigin + vecForward * -16.0f;
+#endif
 
 	gEngfuncs.pTriAPI->RenderMode( kRenderTransAdd );
 	gEngfuncs.pTriAPI->CullFace( TRI_NONE );
 	gEngfuncs.pTriAPI->Begin( TRI_QUADS );
 
 	const float flOpacity = 1.0f - gHUD.m_Flash.m_flSpotScale;
-	gEngfuncs.pTriAPI->Color4f( (gHUD.m_pFlashlightCvarRed->value / 255.0f),
-		(gHUD.m_pFlashlightCvarGreen->value / 255.0f),
-		(gHUD.m_pFlashlightCvarBlue->value / 255.0f),
+	gEngfuncs.pTriAPI->Color4f(
+#ifdef DEBUG
+		gHUD.m_pFlashlightCvarRed->value / 255.0f,
+		gHUD.m_pFlashlightCvarGreen->value / 255.0f,
+		gHUD.m_pFlashlightCvarBlue->value / 255.0f,
+#else
+		1.0f,
+		1.0f,
+		1.0f,
+#endif
 		flOpacity );
 	gEngfuncs.pTriAPI->Brightness( flOpacity );
 

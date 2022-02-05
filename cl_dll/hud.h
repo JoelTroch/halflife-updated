@@ -621,6 +621,7 @@ public:
 
 	float GetSensitivity();
 
+#ifdef DEBUG
 	cvar_t *m_pFlashlightCvarDecayRange;
 	cvar_t *m_pFlashlightCvarRadius;
 	cvar_t *m_pFlashlightCvarRange;
@@ -629,6 +630,7 @@ public:
 	cvar_t *m_pFlashlightCvarRed;
 	cvar_t *m_pFlashlightCvarGreen;
 	cvar_t *m_pFlashlightCvarBlue;
+#endif
 };
 
 extern CHud gHUD;
