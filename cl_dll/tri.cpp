@@ -80,8 +80,11 @@ void DLLEXPORT HUD_DrawTransparentTriangles()
 	gEngfuncs.pTriAPI->CullFace( TRI_NONE );
 	gEngfuncs.pTriAPI->Begin( TRI_QUADS );
 
-	const float flOpacity = 1.0f - (0.5f * gHUD.m_Flash.m_flSpotScale);
-	gEngfuncs.pTriAPI->Color4f( gHUD.m_pFlashlightCvarRed->value / 255.0f, gHUD.m_pFlashlightCvarGreen->value / 255.0f, gHUD.m_pFlashlightCvarBlue->value / 255.0f, flOpacity );
+	const float flOpacity = 1.0f - gHUD.m_Flash.m_flSpotScale;
+	gEngfuncs.pTriAPI->Color4f( (gHUD.m_pFlashlightCvarRed->value / 255.0f),
+		(gHUD.m_pFlashlightCvarGreen->value / 255.0f),
+		(gHUD.m_pFlashlightCvarBlue->value / 255.0f),
+		flOpacity );
 	gEngfuncs.pTriAPI->Brightness( flOpacity );
 
 	gEngfuncs.pTriAPI->TexCoord2f( 1.0f, 1.0f );

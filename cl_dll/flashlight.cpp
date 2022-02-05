@@ -161,7 +161,7 @@ float CHudFlashlight::GetFlashlightRadius( const Vector vecSrc, const pmtrace_t 
 	const float flDist = fabs( (tr.endpos - vecSrc).Length() );
 	if ( flDist > gHUD.m_pFlashlightCvarDecayRange->value )
 	{
-		m_flSpotScale = 1.0f;
+		m_flSpotScale = 0.0f;
 		return gHUD.m_pFlashlightCvarRadius->value;
 	}
 
