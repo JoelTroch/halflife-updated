@@ -58,12 +58,6 @@
     <Filter Include="Header Files\public">
       <UniqueIdentifier>{01f1d541-3bac-4b2c-9a83-2cadcb76ff8d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\cl_dll\particleman">
-      <UniqueIdentifier>{b15eb5d8-7876-4b95-b327-88dc77c46466}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\cl_dll\particleman">
-      <UniqueIdentifier>{7085339d-2b33-4cdf-846c-0e4c7d33add8}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\dlls\crossbow.cpp">
@@ -309,18 +303,6 @@
     <ClCompile Include="..\..\game_shared\filesystem_utils.cpp">
       <Filter>Source Files\game_shared</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\cl_dll\particleman\CMiniMem.cpp">
-      <Filter>Source Files\cl_dll\particleman</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\cl_dll\particleman\IParticleMan_Active.cpp">
-      <Filter>Source Files\cl_dll\particleman</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\cl_dll\particleman\CFrustum.cpp">
-      <Filter>Source Files\cl_dll\particleman</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\cl_dll\particleman\CBaseParticle.cpp">
-      <Filter>Source Files\cl_dll\particleman</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\cl_dll\kbutton.h">
@@ -398,9 +380,6 @@
     <ClInclude Include="..\..\cl_dll\StudioModelRenderer.h">
       <Filter>Header Files\cl_dll</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\cl_dll\tri.h">
-      <Filter>Header Files\cl_dll</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\cl_dll\vgui_int.h">
       <Filter>Header Files\cl_dll</Filter>
     </ClInclude>
@@ -408,9 +387,6 @@
       <Filter>Header Files\cl_dll</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_shared\vgui_slider2.h">
-      <Filter>Header Files\game_shared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\game_shared\voice_status.h">
       <Filter>Header Files\game_shared</Filter>
     </ClInclude>
     <ClInclude Include="..\..\game_shared\vgui_scrollbar2.h">
@@ -577,24 +553,6 @@
     </ClInclude>
     <ClInclude Include="..\..\common\PlatformHeaders.h">
       <Filter>Header Files\common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\particleman_internal.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\CFrustum.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\IParticleMan_Active.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\particleman.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\CMiniMem.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\cl_dll\particleman\CBaseParticle.h">
-      <Filter>Header Files\cl_dll\particleman</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

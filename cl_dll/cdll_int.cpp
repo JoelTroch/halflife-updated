@@ -32,7 +32,6 @@
 #include "Platform.h"
 #include "Exports.h"
 
-#include "tri.h"
 #include "vgui_TeamFortressViewport.h"
 #include "filesystem_utils.h"
 
@@ -40,12 +39,6 @@ cl_enginefunc_t gEngfuncs;
 CHud gHUD;
 TeamFortressViewport* gViewPort = NULL;
 
-
-#include "particleman.h"
-IParticleMan* g_pParticleMan = nullptr;
-
-void CL_LoadParticleMan();
-void CL_UnloadParticleMan();
 
 void InitInput();
 void EV_HookEvents();
@@ -120,7 +113,6 @@ int DLLEXPORT Initialize(cl_enginefunc_t* pEnginefuncs, int iVersion)
 	memcpy(&gEngfuncs, pEnginefuncs, sizeof(cl_enginefunc_t));
 
 	EV_HookEvents();
-	CL_LoadParticleMan();
 
 	if (!FileSystem_LoadFileSystem())
 	{
@@ -271,24 +263,6 @@ void DLLEXPORT HUD_DirectorMessage(int iSize, void* pbuf)
 	//	RecClDirectorMessage(iSize, pbuf);
 
 	gHUD.m_Spectator.DirectorMessage(iSize, pbuf);
-}
-
-void CL_UnloadParticleMan()
-{
-	g_pParticleMan = nullptr;
-}
-
-void CL_LoadParticleMan()
-{
-	//Now implemented in the client library.
-	auto particleManFactory = Sys_GetFactoryThis();
-
-	g_pParticleMan = (IParticleMan*)particleManFactory(PARTICLEMAN_INTERFACE, nullptr);
-
-	if (g_pParticleMan)
-	{
-		g_pParticleMan->SetUp(&gEngfuncs);
-	}
 }
 
 extern "C" void DLLEXPORT F(void* pv)

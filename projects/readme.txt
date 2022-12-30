@@ -9,6 +9,4 @@ vs2019
 Other notes
 ===========
 
-MSVC++ 6.0 .dsp files can be found in the appropriate folders.
-
 Linux Makefiles can be found in ../linux/

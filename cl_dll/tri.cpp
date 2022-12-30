@@ -18,10 +18,6 @@
 #include "triangleapi.h"
 #include "Exports.h"
 
-#include "particleman.h"
-#include "tri.h"
-extern IParticleMan* g_pParticleMan;
-
 /*
 =================
 HUD_DrawNormalTriangles
@@ -47,8 +43,4 @@ Render any triangles with transparent rendermode needs here
 void DLLEXPORT HUD_DrawTransparentTriangles()
 {
 	//	RecClDrawTransparentTriangles();
-
-
-	if (g_pParticleMan)
-		g_pParticleMan->Update();
 }

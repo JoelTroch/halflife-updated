@@ -1011,7 +1011,6 @@ void ShutdownInput()
 }
 
 #include "interface.h"
-void CL_UnloadParticleMan();
 
 
 void DLLEXPORT HUD_Shutdown()
@@ -1022,5 +1021,4 @@ void DLLEXPORT HUD_Shutdown()
 
 
 	FileSystem_FreeFileSystem();
-	CL_UnloadParticleMan();
 }
