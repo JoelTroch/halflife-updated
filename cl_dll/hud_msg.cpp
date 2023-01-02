@@ -21,9 +21,6 @@
 #include "parsemsg.h"
 #include "r_efx.h"
 
-#include "particleman.h"
-extern IParticleMan* g_pParticleMan;
-
 extern BEAM* pBeam;
 extern BEAM* pBeam2;
 extern TEMPENTITY* pFlare; // Vit_amiN
@@ -76,11 +73,7 @@ void CHud::MsgFunc_InitHUD(const char* pszName, int iSize, void* pbuf)
 		pList = pList->pNext;
 	}
 
-
 	//TODO: needs to be called on every map change, not just when starting a new game
-	if (g_pParticleMan)
-		g_pParticleMan->ResetParticles();
-
 	//Probably not a good place to put this.
 	pBeam = pBeam2 = NULL;
 	pFlare = NULL; // Vit_amiN: clear egon's beam flare

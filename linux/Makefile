@@ -72,7 +72,7 @@ all: build_dir targets
 TARGETS=
 
 TARGETS+= \
- 	hl \
+	hl \
 	hl_cdll \
 
 build_dir:

@@ -14,9 +14,6 @@
 #include "pm_shared.h"
 #include "Exports.h"
 
-#include "particleman.h"
-extern IParticleMan* g_pParticleMan;
-
 void Game_AddObjects();
 
 extern Vector v_origin;
@@ -33,17 +30,6 @@ int DLLEXPORT HUD_AddEntity(int type, struct cl_entity_s* ent, const char* model
 {
 	//	RecClAddEntity(type, ent, modelname);
 
-	switch (type)
-	{
-	case ET_NORMAL:
-		break;
-	case ET_PLAYER:
-	case ET_BEAM:
-	case ET_TEMPENTITY:
-	case ET_FRAGMENTED:
-	default:
-		break;
-	}
 	// each frame every entity passes this function, so the overview hooks it to filter the overview entities
 	// in spectator mode:
 	// each frame every entity passes this function, so the overview hooks
@@ -384,9 +370,6 @@ void DLLEXPORT HUD_TempEntUpdate(
 	Vector vAngles;
 
 	gEngfuncs.GetViewAngles((float*)vAngles);
-
-	if (g_pParticleMan)
-		g_pParticleMan->SetVariables(cl_gravity, vAngles);
 
 	// Nothing to simulate
 	if (!*ppTempEntActive)

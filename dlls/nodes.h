@@ -278,26 +278,6 @@ class CNodeEnt : public CBaseEntity
 
 
 //=========================================================
-// CStack - last in, first out.
-//=========================================================
-class CStack
-{
-public:
-	CStack();
-	void Push(int value);
-	int Pop();
-	int Top();
-	int Empty() { return m_level == 0; }
-	int Size() { return m_level; }
-	void CopyToArray(int* piArray);
-
-private:
-	int m_stack[MAX_STACK_NODES];
-	int m_level;
-};
-
-
-//=========================================================
 // CQueue - first in, first out.
 //=========================================================
 class CQueue

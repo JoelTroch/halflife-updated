@@ -657,7 +657,7 @@ void DLLEXPORT CL_CreateMove(float frametime, struct usercmd_s* cmd, int active)
 	Vector viewangles;
 	static Vector oldangles;
 
-	if (0 != active)
+	if ( active )
 	{
 		//memset( viewangles, 0, sizeof( Vector ) );
 		//viewangles[ 0 ] = viewangles[ 1 ] = viewangles[ 2 ] = 0.0;
@@ -1011,7 +1011,6 @@ void ShutdownInput()
 }
 
 #include "interface.h"
-void CL_UnloadParticleMan();
 
 
 void DLLEXPORT HUD_Shutdown()
@@ -1020,7 +1019,5 @@ void DLLEXPORT HUD_Shutdown()
 
 	ShutdownInput();
 
-
 	FileSystem_FreeFileSystem();
-	CL_UnloadParticleMan();
 }
