@@ -632,7 +632,7 @@ void CBasePlayer::PackDeadPlayerItems()
 						rgpPackWeapons[nIndex] = pWeapon;
 
 						// Reload the weapon before dropping it if we have ammo
-						int j = V_min(pWeapon->iMaxClip() - pWeapon->m_iClip, m_rgAmmo[pWeapon->m_iPrimaryAmmoType]);
+						int j = min(pWeapon->iMaxClip() - pWeapon->m_iClip, m_rgAmmo[pWeapon->m_iPrimaryAmmoType]);
 
 						// Add them to the clip
 						pWeapon->m_iClip += j;
@@ -2164,7 +2164,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 				// after the player has been drowning and finally takes a breath
 				if (m_idrowndmg > m_idrownrestored)
 				{
-					int idif = V_min(m_idrowndmg - m_idrownrestored, 10);
+					int idif = min(m_idrowndmg - m_idrownrestored, 10);
 
 					TakeHealth(idif, DMG_GENERIC);
 					m_idrownrestored += idif;
@@ -2730,17 +2730,17 @@ pt_end:
 
 				if (gun && gun->UseDecrement())
 				{
-					gun->m_flNextPrimaryAttack = V_max(gun->m_flNextPrimaryAttack - gpGlobals->frametime, -1.0f);
-					gun->m_flNextSecondaryAttack = V_max(gun->m_flNextSecondaryAttack - gpGlobals->frametime, -0.001f);
+					gun->m_flNextPrimaryAttack = max(gun->m_flNextPrimaryAttack - gpGlobals->frametime, -1.0f);
+					gun->m_flNextSecondaryAttack = max(gun->m_flNextSecondaryAttack - gpGlobals->frametime, -0.001f);
 
 					if (gun->m_flTimeWeaponIdle != 1000)
 					{
-						gun->m_flTimeWeaponIdle = V_max(gun->m_flTimeWeaponIdle - gpGlobals->frametime, -0.001f);
+						gun->m_flTimeWeaponIdle = max(gun->m_flTimeWeaponIdle - gpGlobals->frametime, -0.001f);
 					}
 
 					if (gun->pev->fuser1 != 1000)
 					{
-						gun->pev->fuser1 = V_max(gun->pev->fuser1 - gpGlobals->frametime, -0.001f);
+						gun->pev->fuser1 = max(gun->pev->fuser1 - gpGlobals->frametime, -0.001f);
 					}
 
 					gun->DecrementTimers();
@@ -3904,7 +3904,7 @@ int CBasePlayer::GiveAmmo(int iCount, const char* szName, int iMax)
 	if (i < 0 || i >= MAX_AMMO_SLOTS)
 		return -1;
 
-	int iAdd = V_min(iCount, iMax - m_rgAmmo[i]);
+	int iAdd = min(iCount, iMax - m_rgAmmo[i]);
 	if (iAdd < 1)
 		return i;
 
@@ -4055,7 +4055,7 @@ void CBasePlayer::InternalSendSingleAmmoUpdate(int ammoIndex)
 		// send "Ammo" update message
 		MESSAGE_BEGIN(MSG_ONE, gmsgAmmoX, NULL, pev);
 		WRITE_BYTE(ammoIndex);
-		WRITE_BYTE(V_max(V_min(m_rgAmmo[ammoIndex], 254), 0)); // clamp the value to one byte
+		WRITE_BYTE(max(min(m_rgAmmo[ammoIndex], 254), 0)); // clamp the value to one byte
 		MESSAGE_END();
 	}
 }

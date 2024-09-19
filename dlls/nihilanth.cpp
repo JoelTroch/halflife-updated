@@ -467,7 +467,7 @@ void CNihilanth::DyingThink()
 	{
 		if (m_pBall->pev->renderamt > 0)
 		{
-			m_pBall->pev->renderamt = V_max(0, m_pBall->pev->renderamt - 2);
+			m_pBall->pev->renderamt = max<float>(0, m_pBall->pev->renderamt - 2);
 		}
 		else
 		{
@@ -890,7 +890,7 @@ void CNihilanth::HuntThink()
 		}
 		else
 		{
-			m_flAdj = V_min(m_flAdj + 10.0f, 1000.0f);
+			m_flAdj = min(m_flAdj + 10.0f, 1000.0f);
 		}
 	}
 

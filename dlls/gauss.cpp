@@ -144,7 +144,7 @@ void CGauss::SecondaryAttack()
 {
 	// JoshA: Sanitize this so it's not total garbage on level transition
 	// and we end up ear blasting the player!
-	m_pPlayer->m_flStartCharge = V_min(m_pPlayer->m_flStartCharge, gpGlobals->time);
+	m_pPlayer->m_flStartCharge = min(m_pPlayer->m_flStartCharge, gpGlobals->time);
 
 	// don't fire underwater
 	if (m_pPlayer->pev->waterlevel == 3)
@@ -293,7 +293,7 @@ void CGauss::StartFire()
 
 	// JoshA: Sanitize this so it's not total garbage on level transition
 	// and we end up ear blasting the player!
-	m_pPlayer->m_flStartCharge = V_min(m_pPlayer->m_flStartCharge, gpGlobals->time);
+	m_pPlayer->m_flStartCharge = min(m_pPlayer->m_flStartCharge, gpGlobals->time);
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle + m_pPlayer->pev->punchangle);
 	Vector vecAiming = gpGlobals->v_forward;

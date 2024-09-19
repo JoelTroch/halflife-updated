@@ -159,7 +159,7 @@ bool CHudMenu::Draw(float flTime)
 			nlc++;
 	}
 
-	int nFontHeight = V_max(12, screenInfo.iCharHeight);
+	int nFontHeight = max(12, screenInfo.iCharHeight);
 
 	// center it
 	int y = (ScreenHeight/2) - ((nlc/2)* nFontHeight) - (3 * nFontHeight + nFontHeight / 3); // make sure it is above the say text
@@ -194,8 +194,8 @@ bool CHudMenu::Draw(float flTime)
 			{
 				sptr++;
 			}
-			strncpy(menubuf, ptr, V_min((sptr - ptr), (int)sizeof(menubuf)));
-			menubuf[V_min((sptr - ptr), (int)(sizeof(menubuf) - 1))] = '\0';
+			strncpy(menubuf, ptr, min((sptr - ptr), (int)sizeof(menubuf)));
+			menubuf[min((sptr - ptr), (int)(sizeof(menubuf) - 1))] = '\0';
 
 			if (menu_ralign)
 			{

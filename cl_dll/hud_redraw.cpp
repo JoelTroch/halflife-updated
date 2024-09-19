@@ -72,13 +72,13 @@ void CHud::Think()
 	else
 	{
 		// set a new sensitivity that is proportional to the change from the FOV default
-		m_flMouseSensitivity = IN_GetMouseSensitivity() * ((float)newfov / (float)V_max(default_fov->value, 90.0f)) * CVAR_GET_FLOAT("zoom_sensitivity_ratio");
+		m_flMouseSensitivity = IN_GetMouseSensitivity() * ((float)newfov / max<float>(default_fov->value, 90.0f)) * CVAR_GET_FLOAT("zoom_sensitivity_ratio");
 	}
 
 	// think about default fov
 	if (m_iFOV == 0)
 	{ // only let players adjust up in fov,  and only if they are not overriden by something else
-		m_iFOV = V_max(default_fov->value, 90);
+		m_iFOV = max<int>(default_fov->value, 90);
 	}
 
 	if (0 != gEngfuncs.IsSpectateOnly())
@@ -339,7 +339,7 @@ int CHud::GetHudNumberWidth(int number, int width, int flags)
 		totalDigits = 1;
 	}
 
-	totalDigits = V_max(totalDigits, width);
+	totalDigits = max(totalDigits, width);
 
 	return totalDigits * digitWidth;
 }

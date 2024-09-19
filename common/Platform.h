@@ -74,8 +74,43 @@ using qboolean = int;
 #define DLLHIDDEN __attribute__((visibility("hidden")))
 #endif //WIN32
 
-#define V_min(a, b) (((a) < (b)) ? (a) : (b))
-#define V_max(a, b) (((a) > (b)) ? (a) : (b))
+#ifdef min
+#undef min
+#endif min // min
+
+#ifdef max
+#undef max
+#endif max // max
+
+#ifdef __cplusplus
+extern "C++"
+{
+	// Josh: I would define my own, but older C++ versions we are targeting
+	// had very very strange copy constructor rules which make it so, eg.
+	// (double&, double) doesn't fit (const T& a, const T& b).
+	// Just use the std min/max which solves it.
+#include <algorithm>
+
+#if defined(_MSC_VER) && _MSC_VER < 1300
+	template <class T>
+	inline const T& min(const T& x, const T& y)
+	{
+		return (x < y) ? x : y;
+	}
+	template <class T>
+	inline const T& max(const T& x, const T& y)
+	{
+		return (x > y) ? x : y;
+	}
+#else
+	using std::min;
+	using std::max;
+#endif // defined(_MSC_VER) && _MSC_VER < 1300
+}
+#else
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+#define max(a, b) (((a) > (b)) ? (a) : (b))
+#endif // __cplusplus
 
 // Clamp macro is deprecated. Use std::clamp instead.
 // #define clamp(val, min, max) (((val) > (max)) ? (max) : (((val) < (min)) ? (min) : (val)))

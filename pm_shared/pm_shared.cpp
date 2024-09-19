@@ -237,7 +237,7 @@ void PM_InitTextureTypes()
 			continue;
 
 		// null-terminate name and save in sentences array
-		j = V_min(j, CBTEXTURENAMEMAX - 1 + i);
+		j = min(j, CBTEXTURENAMEMAX - 1 + i);
 		buffer[j] = 0;
 		strcpy(&(grgszTextureName[gcTextures++][0]), &(buffer[i]));
 	}
@@ -2103,7 +2103,7 @@ void PM_Duck()
 				pmove->bInDuck = 1;
 			}
 
-			time = V_max(0.0, (1.0 - (float)pmove->flDuckTime / 1000.0));
+			time = max(0.0, (1.0 - (float)pmove->flDuckTime / 1000.0));
 
 			if (0 != pmove->bInDuck)
 			{
@@ -2913,7 +2913,7 @@ void PM_DropPunchAngle(Vector& punchangle)
 
 	len = VectorNormalize(punchangle);
 	len -= (10.0 + len * 0.5) * pmove->frametime;
-	len = V_max(len, 0.0f);
+	len = max(len, 0.0f);
 	VectorScale(punchangle, len, punchangle);
 }
 
@@ -2937,7 +2937,7 @@ void PM_CheckParamters()
 	maxspeed = pmove->clientmaxspeed; //atof( pmove->PM_Info_ValueForKey( pmove->physinfo, "maxspd" ) );
 	if (maxspeed != 0.0)
 	{
-		pmove->maxspeed = V_min(maxspeed, pmove->maxspeed);
+		pmove->maxspeed = min(maxspeed, pmove->maxspeed);
 	}
 
 	// Slow down, I'm pulling it! (a box maybe) but only when I'm standing on ground
