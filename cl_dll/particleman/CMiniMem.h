@@ -1,7 +1,21 @@
 #pragma once
 
+// Polymorphic Memory Resource was added in C++-17. However, C++-17 is not fully supported by GNU G++ 9 (the highest we
+// can use in Steam Runtime version 1 aka "Scout" without additional risky setup) and PMR is sadly one of them (support
+// was added since GNU G++ 10, clang 7 and MSVC 16.5 aka Visual Studio 2019).
+//
+// For the older toolchains, we have no choice but to use standard allocation instead. "std::allocator" was considered
+// but the fact that the alignment is "hardcoded and cannot be changed" there made it impossible to use.
+#if defined(__cpp_lib_memory_resource)
+#define USE_PMR 1
+#else
+#define USE_PMR 0
+#endif
+
 #include <cstddef>
+#if USE_PMR
 #include <memory_resource>
+#endif
 #include <vector>
 
 class CBaseParticle;
@@ -16,7 +30,9 @@ class CMiniMem
 private:
 	static inline CMiniMem* _instance = nullptr;
 
+#if USE_PMR
 	std::pmr::unsynchronized_pool_resource _pool;
+#endif
 
 	std::vector<CBaseParticle*> _particles;
 	std::size_t _visibleParticles = 0;

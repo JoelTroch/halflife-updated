@@ -25,7 +25,11 @@
 
 void* CMiniMem::Allocate(std::size_t sizeInBytes, std::size_t alignment)
 {
+#if USE_PMR
 	auto particle = reinterpret_cast<CBaseParticle*>(_pool.allocate(sizeInBytes, alignment));
+#else
+	auto particle = reinterpret_cast<CBaseParticle*>(::operator new(sizeInBytes, std::align_val_t(alignment)));
+#endif
 
 	if (nullptr != particle)
 	{
@@ -44,7 +48,11 @@ void CMiniMem::Deallocate(void* memory, std::size_t sizeInBytes, std::size_t ali
 
 	_particles.erase(std::find(_particles.begin(), _particles.end(), memory));
 
+#if USE_PMR
 	_pool.deallocate(memory, sizeInBytes, alignment);
+#else
+	::operator delete(memory, std::align_val_t(alignment));
+#endif
 }
 
 void CMiniMem::Shutdown()
@@ -220,6 +228,8 @@ void CMiniMem::Reset()
 	//_particles.clear();
 
 	//Wipe away previously allocated memory so maps with loads of particles don't eat up memory forever.
+#if USE_PMR
 	_pool.release();
+#endif
 	_particles.shrink_to_fit();
 }

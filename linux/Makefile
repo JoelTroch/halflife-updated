@@ -29,7 +29,7 @@ ifeq "$(COMPILER)" ""
 endif
 
 CPLUS="$(COMPILER) -m32"
-CPP_LIB:=-L$(shell g++ -m32 -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread -static-libstdc++ -static-libgcc
+CPP_LIB:=-L$(shell $(COMPILER) -m32 -print-file-name=libstdc++.so | xargs dirname) -lstdc++ -ldl -lpthread -static-libstdc++ -static-libgcc
 
 ARCH_CFLAGS=-march=pentium-m -mfpmath=387 -mno-sse
 
@@ -61,7 +61,7 @@ endif
 
 AR=ar
 LIBEXT=a
-MAKE+= -j8
+MAKE+= -j$(shell nproc)
 
 MAKE_HL_LIB=$(MAKE) -f Makefile.hldll
 MAKE_HL_CDLL=$(MAKE) -f Makefile.hl_cdll

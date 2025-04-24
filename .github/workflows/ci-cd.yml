@@ -3,52 +3,63 @@ name: CI/CD
 on: [push, pull_request]
 
 jobs:
-  linux:
-    name: Linux-x86
+  linux-native:
+    name: Linux-x86 (Native)
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       matrix:
         compiler: [g++, clang++]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Install G++ Multilib, Clang++ & OpenGL library
+      - name: Download and install dependencies
         run: |
-          sudo apt update
-          sudo apt install -y g++-multilib clang libgl1-mesa-dev
-      
+          sudo apt-get update
+          sudo apt-get install -y clang g++-multilib libgl-dev
       - name: Build
         run: |
           cd linux
-          make COMPILER=${{ matrix.compiler }} CFG=release -j2
-      
-      - name: Deploy
+          make CFG=release COMPILER=${{ matrix.compiler }}
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Linux-x86-${{ matrix.compiler }}
+          name: Linux-x86-Native-${{ matrix.compiler }}
           path: |
             linux/release/client.so
             linux/release/client.so.dbg
             linux/release/hl.so
             linux/release/hl.so.dbg
-      
+  linux-steam-runtime:
+    name: Linux-x86 (Steam Runtime)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build
+        uses: docker://registry.gitlab.steamos.cloud/steamrt/scout/sdk/i386:latest
+        with:
+          args: ./linux/github_actions_steam_runtime_build.sh
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux-x86-Steam-Runtime
+          path: |
+            linux/release/client.so
+            linux/release/client.so.dbg
+            linux/release/hl.so
+            linux/release/hl.so.dbg
   win32:
     name: Win32
     runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Add MSBuild to PATH
+      - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-        with:
-          msbuild-architecture: x86
-      
       - name: Build
-        run: msbuild projects/vs2019/projects.sln -t:rebuild -property:Configuration=Release -maxcpucount:2
-      
-      - name: Deploy
+        run: MSBuild -maxCpuCount:$env:NUMBER_OF_PROCESSORS -property:Configuration=Release -target:Rebuild projects/vs2019/projects.sln
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: Win32
@@ -57,4 +68,3 @@ jobs:
             projects/vs2019/Release/hl_cdll/client.pdb
             projects/vs2019/Release/hldll/hl.dll
             projects/vs2019/Release/hldll/hl.pdb
-      
